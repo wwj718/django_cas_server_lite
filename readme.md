@@ -24,7 +24,23 @@
 
 ### nginx
 ```
-
+:::text
+server {
+        listen 80;             #端口
+        server_name cas.just4fun.site;   #访问域名
+        #root /home/bob/dylan/;
+        access_log /tmp/access.log;
+        error_log /tmp/access.log;
+        location / {
+                proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $http_host;
+                proxy_redirect off;
+                if (!-f $request_filename) {
+                        proxy_pass http://127.0.0.1:8001;  #这里是flask应用的gunicorn端口
+                        break;
+                }
+        }
+}
 ```
 
 # 对Open edX用户
