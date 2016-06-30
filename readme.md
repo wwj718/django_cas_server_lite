@@ -18,9 +18,9 @@
 ### gunicorn
 时候用gunicorn：
 
-`gunicorn django_cas_server_lite.wsgi:application --bind 127.0.0.1:8001`，之后用nginx反向代理
+`gunicorn django_cas_server_lite.wsgi:application --bind 127.0.0.1:8001 -w 4`, `-w 4` 表示4个worker，之后用nginx反向代理
 
-`gunicorn django_cas_server_lite.wsgi:application --bind 0.0.0.0:8001 -w 4` ：跑4个worker，gunicorn可以先跑在tmux里，如果需要将其设为守护进程，使用Supervisor
+gunicorn可以先跑在tmux里，如果需要将其设为守护进程，使用Supervisor
 
 ### nginx
 ```
