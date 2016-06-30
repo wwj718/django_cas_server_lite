@@ -88,7 +88,7 @@ import pymysql.cursors
 class RemoteMysqlBackend(object):
     #*  建立实验库和表，给出远程可读权限
     #*  先连接远程mysql，使用python mysql驱动:https://github.com/PyMySQL/PyMySQL
-    #*  远程执行用户验证，可能有sql诸如漏洞，构造一个
+    #*  远程执行用户验证，可能有sql注入漏洞，django url机制会过滤危险查询参数？
     #*  安全的用法是用orm
     connection = pymysql.connect(host='127.0.0.1', # 测试变量放到.local.setting里
                              user='cas',
