@@ -2,18 +2,19 @@
 精简版的cas服务器，尽量减少依赖
 
 # install
-* git clone https://github.com/wwj718/django_cas_server_lite
-*  open http://127.0.0.1:8000/django_cas/login
+*  git clone https://github.com/wwj718/django_cas_server_lite
+*  virtualenv cas_env
+*  . env/bin/activate.fish
+*  cd django_cas_server_lite
+*  pip install -r requirements.txt //如果网络不便，也可以手动安装 requirements.txt里的依赖，我已经把依赖控制到最精简了
+*  python manage.py runserver 
 
 # todo
 *  是remote database backend变为可选功能，采用配置文件实现
 
 
 # 部署
-直接用django跑：
-
-`python manage.py runserver --settings=django_cas_server_lite.production 0.0.0.0:8000`
-
+依然需要先进入cas_env
 
 ### gunicorn
 时候用gunicorn：
@@ -46,5 +47,13 @@ server {
 # 对Open edX用户
 如果你未使用Open edX，可以忽视这条
 
-如果你使用Open edX，你可以利用Open edX的edxapp env，这样一来依赖都是完备的
+如果你使用Open edX，你可以利用Open edX的edxapp env，这样一来依赖都是完备的,不需要额外安装
 
+```bash
+git clone https://github.com/wwj718/django_cas_server_lite
+cd django_cas_server_lite
+. /edx/app/edxapp/edxapp_env
+gunicorn django_cas_server_lite.wsgi:application --bind 127.0.0.1:8001 -w 4
+```
+
+之后配置nginx即可
