@@ -26,11 +26,14 @@ class SeuBackend(object):
 
             #if password == 'master':
             if password == seu_user.password:
-                # check password from user.password
+                # check password from user.password ，可以在这里是有hash算法，SeuUser表的密码可以采用任意的加密
+                # 参考http://zhuoqiang.me/password-storage-and-python-example.html 用户密码的存储与 Python 示例
+                # 估计采用md5 sha1 sha256之类的多，采用python直接认证就可
                 try:
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
                     #user = User(username=username,email=username+"example.com", password='get from settings.py')
+                    # 密码可以来自setting，秘钥
                     user = User(username=username, password='get from settings.py')
                     #user.set_unusable_password()
                     #user.is_staff = True
