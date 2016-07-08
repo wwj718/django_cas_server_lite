@@ -4,7 +4,7 @@
 # install
 *  git clone https://github.com/wwj718/django_cas_server_lite
 *  virtualenv cas_env
-*  . env/bin/activate.fish
+*  . cas_env/bin/activate.fish
 *  cd django_cas_server_lite
 *  pip install -r requirements.txt //如果网络不便，也可以手动安装 requirements.txt里的依赖，我已经把依赖控制到最精简了
 *  python manage.py runserver 
