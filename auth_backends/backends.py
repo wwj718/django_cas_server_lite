@@ -7,6 +7,7 @@ For more information visit https://docs.djangoproject.com/en/dev/topics/auth/cus
 #from django.contrib.auth.models import User, check_password
 from auth_backends.models import  SeuUser
 from django.contrib.auth.models import User
+import hashlib
 class SeuBackend(object):
     '''
     from django.contrib.auth import authenticate
@@ -20,12 +21,20 @@ class SeuBackend(object):
     wwj = authenticate(username='wwj', password='wwj')
     #u'django.contrib.auth.backends.ModelBackend'
     '''
+    def password_check(password_input,raw_password):
+        """
+        raw_password:是数据库里存储的
+        password_input:是原始字符串
+        """
+        return raw_password == hashlib.md5(password_input).digest()
+
     def authenticate(self, username=None, password=None):
         try:
             seu_user = SeuUser.objects.get(username=username)
 
             #if password == 'master':
-            if password == seu_user.password:
+            #if password == seu_user.password:
+            if  self.password_check(password,seu_user.password): # 假设数据表采用了MD5加密的密码，建议使用加盐的密码存储，md5不安全！密码可能有unicode字符问题，需要编解码
                 # check password from user.password ，可以在这里是有hash算法，SeuUser表的密码可以采用任意的加密
                 # 参考http://zhuoqiang.me/password-storage-and-python-example.html 用户密码的存储与 Python 示例
                 # 估计采用md5 sha1 sha256之类的多，采用python直接认证就可
