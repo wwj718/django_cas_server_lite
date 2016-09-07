@@ -9,6 +9,9 @@
 *  pip install -r requirements.txt //如果网络不便，也可以手动安装 requirements.txt里的依赖，我已经把依赖控制到最精简了
 *  python manage.py runserver 
 
+# uasge
+/django_cas/login
+
 # todo
 *  是remote database backend变为可选功能，采用配置文件实现
 
@@ -22,6 +25,22 @@
 `gunicorn django_cas_server_lite.wsgi:application --bind 127.0.0.1:8001 -w 4`, `-w 4` 表示4个worker，之后用nginx反向代理
 
 gunicorn可以先跑在tmux里，如果需要将其设为守护进程，使用Supervisor
+
+
+### Supervisor配置
+```
+[program:cas]
+
+command=/edx/app/edxapp/venvs/edxapp/bin/gunicorn  /edx/app/edxapp/django_cas_server_lite/django_cas_server_lite.wsgi:application
+
+user=www-data
+directory=/edx/app/edxapp/django_cas_server_lite
+environment=PORT=8001,ADDRESS=127.0.0.1,LANG=en_US.UTF-8,PATH="/edx/app/edxapp/venvs/edxapp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+stdout_logfile=/edx/var/log/supervisor/%(program_name)s-stdout.log
+stderr_logfile=/edx/var/log/supervisor/%(program_name)s-stderr.log
+killasgroup=true
+stopasgroup=true
+```
 
 ### nginx
 ```
